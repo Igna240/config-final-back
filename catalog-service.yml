@@ -1,0 +1,47 @@
+server:
+  port: 8099
+spring:
+  data:
+    mongodb:
+      uri: mongodb://db-mongo:27017/backend
+  rabbitmq:
+    host: rabbit-mq
+    password: guest
+    port: 5672
+    username: guest
+  zipkin:
+    base-url: http://zipkin:9411/
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+      fetchRegistry: true
+      registerWithEureka: true
+
+queue: 
+  movie:
+    name: MovieQueue
+  serie:
+    name: SerieQueue
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      movies:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+        permittedNumberOfCallsInHalfOpenState: 3
+        registerHealthIndicator: true
+        allowHealthIndicatorToFail: false
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  retry:
+    instances:
+      movies:
+        waitDuration: 1000
+        maxAttempts: 3
+        retryExceptions:
+          - feign.FeignException$InternalServerError
