@@ -1,0 +1,30 @@
+server:
+  port: 8097
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://db-mysql:3306/movies
+    username: root
+    password: root
+  rabbitmq:
+    username: guest
+    password: guest
+    host: rabbit-mq
+    port: 5672
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+      fetchRegistry: true
+      registerWithEureka: true
+
+queue:
+  movie:
+    name: MovieQueue
